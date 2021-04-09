@@ -1,0 +1,23 @@
+import requests
+import re
+
+url = "https://api.apify.com/v2/key-value-stores/toDWvRj1JpTXiM8FF/records/LATEST?disableRedirect=true"
+
+response = requests.get(url)
+data = response.json()
+active = data['activeCasesNew']
+recovered = data['recoveredNew']
+deaths = data['deathsNew']
+total_cases = data['totalCases']
+print("Covid Tracker -- Cases in India")
+print(f'Active Cases = {active},\nRecovered Cases = {recovered},\nDeath = {deaths},\nTotal Cases = {total_cases}')
+
+Region_name = input('Enter the State Name: ')
+Region = re.sub('([A-Z])', r' \1', Region_name).capitalize()
+
+region = data['regionData']
+for data in region:
+    # print(data['region'])
+    if data['region'] == Region:
+        infected = data['totalInfected']
+        print(f'Total Infected in {Region}: {infected} and Recovered number : {data["recovered"]}')
